@@ -302,7 +302,6 @@ export default function EnhancedDonationWidget() {
         
         {showInfo && (
           <div className="mt-3 pt-3 border-t border-gray-200 space-y-2 text-sm text-gray-600">
-            <p><strong>Why crypto?</strong> Immediate transfer, avoids frozen bank accounts, more access points than banks.</p>
             <p><strong>100% goes to family:</strong> We're volunteers, no admin costs. Daily direct transfers.</p>
             <p><strong>Current prices in Gaza:</strong> Flour $45/kg, Chicken $100 (when available).</p>
           </div>

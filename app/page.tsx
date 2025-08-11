@@ -2,7 +2,7 @@ import { getFrameMetadata } from '@coinbase/onchainkit';
 import type { Metadata } from 'next';
 import { NEXT_PUBLIC_URL } from './config';
 import { campaignInfo } from './lib/campaignInfo';
-import MobileHomePage from './components/MobileHomePage';
+import MinimalHomePage from './components/MinimalHomePage';
 
 export async function generateMetadata(): Promise<Metadata> {
   const frameMetadata = getFrameMetadata({
@@ -33,5 +33,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Page() {
-  return <MobileHomePage />;
+  return <MinimalHomePage />;
 }

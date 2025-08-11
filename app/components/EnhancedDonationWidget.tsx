@@ -392,11 +392,6 @@ export default function EnhancedDonationWidget() {
                 {selectedToken}
               </span>
             </div>
-            {amount && selectedToken === 'USDC' && (
-              <p className="text-xs text-gray-500">
-                ≈ {(parseFloat(amount) / 150).toFixed(2)} days of food for the family
-              </p>
-            )}
           </div>
 
           {/* Quick Amount Buttons */}

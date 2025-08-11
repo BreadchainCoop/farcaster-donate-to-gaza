@@ -5,11 +5,12 @@
     "signature": "V+Wwbz4H2bUC42U9qEmXi74PY3rNvZJFxbSeqKErhcN0wShOWdWWH4eE4G1vu5qIPTgAbr9vOTJbj6BpOF0e9xw="
   },
   "miniapp": {
+    "version": "1",
     "name": "Gaza Donations - Ibrahim Friends",
     "homeUrl": "https://farcaster-donate-to-gaza.vercel.app",
     "iconUrl": "https://farcaster-donate-to-gaza.vercel.app/watermelon-icon.png",
     "subtitle": "Direct Crypto Donations",
-    "description": "Support Ibrahim's family in Gaza with direct cryptocurrency donations for food, rent, and medicine. 100% of your donation directly reaches them.",
+    "description": "Support Ibrahim's family in Gaza with direct cryptocurrency donations for food, rent, and medicine. 100 percent of your donation directly reaches them.",
     "splashBackgroundColor": "#f3f4f6",
     "primaryCategory": "utility"
   }

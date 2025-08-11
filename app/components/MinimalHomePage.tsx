@@ -1,11 +1,11 @@
 'use client';
 
-import SimplifiedDonationWidget from './SimplifiedDonationWidget';
+import AnimatedDonationWidget from './AnimatedDonationWidget';
 
 export default function MinimalHomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white flex items-center justify-center p-4">
-      <SimplifiedDonationWidget />
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 flex items-center justify-center p-4">
+      <AnimatedDonationWidget />
     </div>
   );
 }

@@ -12,6 +12,14 @@ export const SUPPORTED_TOKENS = {
     decimals: 18,
     isNative: true,
   },
+  BREAD: {
+    symbol: 'BREAD',
+    name: 'Bread Token',
+    decimals: 18,
+    address: '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3', // Gnosis Chain BREAD
+    isNative: false,
+    chainId: 100, // Gnosis Chain
+  },
   USDT: {
     symbol: 'USDT',
     name: 'Tether USD',

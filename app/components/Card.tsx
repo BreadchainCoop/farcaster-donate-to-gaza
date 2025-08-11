@@ -1,7 +1,19 @@
-import { CARD_DIMENSIONS, TOKEN_IMAGE } from '../config';
+import React from 'react';
 
-export function Card({ message, image }: { message: string; image?: string }) {
-  const imageSrc = image ?? TOKEN_IMAGE;
+interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export default function Card({ children, className = '' }: CardProps) {
+  return (
+    <div className={`bg-white rounded-lg shadow-sm p-6 ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+export function FrameCard({ message, image }: { message?: string; image?: string }) {
   return (
     <div
       style={{
@@ -11,10 +23,11 @@ export function Card({ message, image }: { message: string; image?: string }) {
         justifyContent: 'center',
         flexDirection: 'column',
         textAlign: 'center',
-        ...CARD_DIMENSIONS,
+        width: 800,
+        height: 800,
       }}
     >
-      <img style={{ width: '100%', height: '100%', marginTop: '-212px' }} src={imageSrc} />
+      {image && <img style={{ width: '100%', height: '100%' }} src={image} alt="" />}
       {message && (
         <div
           style={{

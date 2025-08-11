@@ -1,6 +1,6 @@
 import { FrameRequest, getFrameMessage } from '@coinbase/onchainkit';
 import { NextRequest, NextResponse } from 'next/server';
-import { NEXT_PUBLIC_URL, ZORA_COLLECTION_ADDRESS, ZORA_TOKEN_ID } from '../../config';
+import { NEXT_PUBLIC_URL, DONATION_ADDRESS } from '../../config';
 import { getAddressButtons } from '../../lib/addresses';
 import { allowedOrigin } from '../../lib/origin';
 import { kv } from '@vercel/kv';
@@ -34,7 +34,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
               {
                 label: 'Mint',
                 action: 'mint',
-                target: `eip155:8453:${ZORA_COLLECTION_ADDRESS}:${ZORA_TOKEN_ID}`,
+                target: `${NEXT_PUBLIC_URL}#donate`,
               },
             ],
             image: `${NEXT_PUBLIC_URL}/api/images/claimed`,

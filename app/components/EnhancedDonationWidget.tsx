@@ -275,10 +275,23 @@ export default function EnhancedDonationWidget() {
             <div className="text-xl font-bold text-red-600">€150/day</div>
             <div className="text-xs text-gray-600">Basic food for 27 people</div>
           </div>
-          <div className="bg-orange-50 p-3 rounded-lg">
-            <div className="text-xl font-bold text-orange-600">40%</div>
-            <div className="text-xs text-gray-600">Exchange fee in Gaza</div>
+          <div className="bg-blue-50 p-3 rounded-lg">
+            <div className="text-xl font-bold text-blue-600">100%</div>
+            <div className="text-xs text-gray-600">Direct to family</div>
           </div>
+        </div>
+        <div className="mb-3">
+          <a 
+            href="https://sindominio.net/ibrahimfriends/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
+          >
+            <span>Visit Ibrahim Friends website</span>
+            <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
         </div>
         <button
           onClick={() => setShowInfo(!showInfo)}

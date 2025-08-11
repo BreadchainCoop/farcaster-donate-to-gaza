@@ -4,42 +4,25 @@ export const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || 'localhost:3000';
 // Gaza donation wallet address
 export const DONATION_ADDRESS = '0xFe70d2Fe8a0cCce98fB595f0Ef98C1522d6310b6';
 
-// Supported cryptocurrencies with their contract addresses (for ERC-20 tokens)
+// Supported cryptocurrencies with their contract addresses
 export const SUPPORTED_TOKENS = {
-  ETH: {
-    symbol: 'ETH',
-    name: 'Ethereum',
-    decimals: 18,
-    isNative: true,
+  USDC: {
+    symbol: 'USDC',
+    name: 'USD Coin (Base)',
+    decimals: 6,
+    address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // Base USDC
+    isNative: false,
+    chainId: 8453, // Base
+    network: 'base',
   },
   BREAD: {
     symbol: 'BREAD',
-    name: 'Bread Token',
+    name: 'Bread Token (Gnosis)',
     decimals: 18,
     address: '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3', // Gnosis Chain BREAD
     isNative: false,
     chainId: 100, // Gnosis Chain
-  },
-  USDT: {
-    symbol: 'USDT',
-    name: 'Tether USD',
-    decimals: 6,
-    address: '0xdAC17F958D2ee523a2206206994597C13D831ec7', // Mainnet USDT
-    isNative: false,
-  },
-  USDC: {
-    symbol: 'USDC',
-    name: 'USD Coin',
-    decimals: 6,
-    address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', // Mainnet USDC
-    isNative: false,
-  },
-  DAI: {
-    symbol: 'DAI',
-    name: 'Dai Stablecoin',
-    decimals: 18,
-    address: '0x6B175474E89094C44Da98b954EedeAC495271d0F', // Mainnet DAI
-    isNative: false,
+    network: 'gnosis',
   },
 };
 

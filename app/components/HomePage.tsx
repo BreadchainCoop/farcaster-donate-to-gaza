@@ -3,7 +3,7 @@
 import { DONATION_ADDRESS } from '../config';
 import { campaignInfo } from '../lib/campaignInfo';
 import Card from './Card';
-import SimpleDonationWidget from './SimpleDonationWidget';
+import FarcasterDonationWidget from './FarcasterDonationWidget';
 
 export default function HomePage() {
   return (
@@ -18,7 +18,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
             {/* Donation Widget */}
             <div>
-              <SimpleDonationWidget />
+              <FarcasterDonationWidget />
             </div>
             
             {/* Campaign Info */}

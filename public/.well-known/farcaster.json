@@ -2,7 +2,7 @@
   "miniapp": {
     "name": "Gaza Aid Platform",
     "homeUrl": "https://farcaster-donate-to-gaza.vercel.app",
-    "iconUrl": "https://farcaster-donate-to-gaza.vercel.app/giraffe.png",
+    "iconUrl": "https://farcaster-donate-to-gaza.vercel.app/watermelon-icon.png",
     "subtitle": "Direct Crypto Donations",
     "description": "Support Ibrahim's family in Gaza with direct cryptocurrency donations for food, rent, and medicine. 100% of your donation directly reaches them.",
     "splashBackgroundColor": "#f3f4f6",

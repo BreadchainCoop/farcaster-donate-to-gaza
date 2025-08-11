@@ -1,0 +1,289 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount, useBalance, useSendTransaction, useWaitForTransactionReceipt, useWriteContract, useReadContract } from 'wagmi';
+import { parseEther, parseUnits, formatEther, formatUnits, type Address } from 'viem';
+import { DONATION_ADDRESS, SUPPORTED_TOKENS } from '../config';
+import { QRCodeSVG as QRCode } from 'qrcode.react';
+
+const ERC20_ABI = [
+  {
+    inputs: [
+      { name: 'recipient', type: 'address' },
+      { name: 'amount', type: 'uint256' }
+    ],
+    name: 'transfer',
+    outputs: [{ name: '', type: 'bool' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ name: 'account', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'decimals',
+    outputs: [{ name: '', type: 'uint8' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+] as const;
+
+export default function DonationWidget() {
+  const [amount, setAmount] = useState('');
+  const [selectedToken, setSelectedToken] = useState('ETH');
+  const [showQR, setShowQR] = useState(false);
+  const [copiedAddress, setCopiedAddress] = useState(false);
+  
+  const { address, isConnected } = useAccount();
+  
+  // ETH transaction
+  const { 
+    data: hash,
+    error: sendError,
+    isPending: isSending,
+    sendTransaction 
+  } = useSendTransaction();
+  
+  // ERC20 transaction
+  const { 
+    data: erc20Hash,
+    error: erc20Error,
+    isPending: isWriting,
+    writeContract 
+  } = useWriteContract();
+  
+  // Transaction receipt
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
+    hash: hash || erc20Hash,
+  });
+  
+  // Get user's ETH balance
+  const { data: ethBalance } = useBalance({
+    address: address,
+  });
+  
+  // Get user's token balance for selected token
+  const token = SUPPORTED_TOKENS[selectedToken as keyof typeof SUPPORTED_TOKENS];
+  const { data: tokenBalance } = useReadContract({
+    address: token && !token.isNative && 'address' in token ? (token.address as Address) : undefined,
+    abi: ERC20_ABI,
+    functionName: 'balanceOf',
+    args: address ? [address] : undefined,
+  });
+
+  const handleDonate = async () => {
+    if (!amount || parseFloat(amount) <= 0) {
+      alert('Please enter a valid amount');
+      return;
+    }
+
+    try {
+      const selectedTokenData = SUPPORTED_TOKENS[selectedToken as keyof typeof SUPPORTED_TOKENS];
+      
+      if (selectedTokenData.isNative) {
+        // Send ETH
+        sendTransaction({
+          to: DONATION_ADDRESS as Address,
+          value: parseEther(amount),
+        });
+      } else if ('address' in selectedTokenData) {
+        // Send ERC20 token
+        const decimals = selectedTokenData.decimals;
+        const amountInUnits = parseUnits(amount, decimals);
+        
+        writeContract({
+          address: selectedTokenData.address as Address,
+          abi: ERC20_ABI,
+          functionName: 'transfer',
+          args: [DONATION_ADDRESS as Address, amountInUnits],
+        });
+      }
+    } catch (error) {
+      console.error('Donation error:', error);
+      alert('Error processing donation. Please try again.');
+    }
+  };
+
+  const copyAddress = () => {
+    navigator.clipboard.writeText(DONATION_ADDRESS);
+    setCopiedAddress(true);
+    setTimeout(() => setCopiedAddress(false), 2000);
+  };
+
+  const getBalance = () => {
+    const selectedTokenData = SUPPORTED_TOKENS[selectedToken as keyof typeof SUPPORTED_TOKENS];
+    
+    if (selectedTokenData.isNative && ethBalance) {
+      return formatEther(ethBalance.value);
+    } else if (!selectedTokenData.isNative && tokenBalance) {
+      return formatUnits(tokenBalance as bigint, selectedTokenData.decimals);
+    }
+    return '0';
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setAmount('');
+      alert('Thank you for your donation! Transaction confirmed.');
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (sendError || erc20Error) {
+      console.error('Transaction error:', sendError || erc20Error);
+      alert('Transaction failed. Please try again.');
+    }
+  }, [sendError, erc20Error]);
+
+  return (
+    <div className="bg-white rounded-lg shadow-lg p-8">
+      <h2 className="text-2xl font-bold mb-6">Make a Donation</h2>
+      
+      {/* Wallet Connection */}
+      <div className="mb-6">
+        <ConnectButton showBalance={false} />
+      </div>
+
+      {isConnected && (
+        <>
+          {/* Token Selection */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Select Cryptocurrency
+            </label>
+            <select
+              value={selectedToken}
+              onChange={(e) => setSelectedToken(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              {Object.entries(SUPPORTED_TOKENS).map(([key, token]) => (
+                <option key={key} value={key}>
+                  {token.symbol} - {token.name}
+                </option>
+              ))}
+            </select>
+            <p className="text-xs text-gray-500 mt-1">
+              Balance: {getBalance()} {selectedToken}
+            </p>
+          </div>
+
+          {/* Amount Input */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Amount
+            </label>
+            <div className="relative">
+              <input
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="0.0"
+                step="0.001"
+                min="0"
+                className="w-full px-4 py-2 pr-16 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <span className="absolute right-4 top-2.5 text-gray-500">
+                {selectedToken}
+              </span>
+            </div>
+          </div>
+
+          {/* Quick Amount Buttons */}
+          <div className="grid grid-cols-4 gap-2 mb-6">
+            {['0.01', '0.05', '0.1', '0.5'].map((val) => (
+              <button
+                key={val}
+                onClick={() => setAmount(val)}
+                className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50"
+              >
+                {val}
+              </button>
+            ))}
+          </div>
+
+          {/* Donate Button */}
+          <button
+            onClick={handleDonate}
+            disabled={isSending || isWriting || isConfirming || !amount}
+            className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition duration-200"
+          >
+            {isSending || isWriting
+              ? 'Sending...'
+              : isConfirming
+              ? 'Confirming...'
+              : `Donate ${amount || '0'} ${selectedToken}`}
+          </button>
+
+          {/* Transaction Status */}
+          {(hash || erc20Hash) && (
+            <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded">
+              <p className="text-sm text-green-800">
+                Transaction submitted!{' '}
+                <a
+                  href={`https://etherscan.io/tx/${hash || erc20Hash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline"
+                >
+                  View on Etherscan
+                </a>
+              </p>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Manual Donation Section */}
+      <div className="mt-8 pt-8 border-t border-gray-200">
+        <h3 className="text-lg font-semibold mb-4">Manual Donation</h3>
+        <p className="text-sm text-gray-600 mb-4">
+          Send any cryptocurrency directly to this address:
+        </p>
+        
+        {/* Address Display */}
+        <div className="bg-gray-50 p-4 rounded-lg mb-4">
+          <div className="flex items-center justify-between">
+            <code className="text-xs break-all">{DONATION_ADDRESS}</code>
+            <button
+              onClick={copyAddress}
+              className="ml-2 px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded transition"
+            >
+              {copiedAddress ? 'Copied!' : 'Copy'}
+            </button>
+          </div>
+        </div>
+
+        {/* QR Code Toggle */}
+        <button
+          onClick={() => setShowQR(!showQR)}
+          className="text-sm text-blue-600 hover:underline"
+        >
+          {showQR ? 'Hide' : 'Show'} QR Code
+        </button>
+
+        {/* QR Code Display */}
+        {showQR && (
+          <div className="mt-4 flex justify-center">
+            <div className="p-4 bg-white border-2 border-gray-300 rounded">
+              <QRCode value={DONATION_ADDRESS} size={200} />
+            </div>
+          </div>
+        )}
+
+        {/* Network Notice */}
+        <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
+          <p className="text-xs text-yellow-800">
+            <strong>Recommended:</strong> For lowest fees, use USDT on Tron network. 
+            The address above works for Ethereum and EVM-compatible chains.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -2,7 +2,8 @@ import { Hex, zeroAddress } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { base } from 'viem/chains';
 
-const SIGNER_PRIVATE_KEY = (process.env.SIGNER_PRIVATE_KEY ?? '0x00') as Hex;
+// Use a dummy private key if not provided (for donation app, we don't need signing)
+const SIGNER_PRIVATE_KEY = (process.env.SIGNER_PRIVATE_KEY ?? '0x0000000000000000000000000000000000000000000000000000000000000001') as Hex;
 const MINTER_CONTRACT = (process.env.MINTER_CONTRACT ?? zeroAddress) as Hex;
 
 const account = privateKeyToAccount(SIGNER_PRIVATE_KEY);

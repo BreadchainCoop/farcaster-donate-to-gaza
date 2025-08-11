@@ -1,26 +1,11 @@
 {
   "miniapp": {
-    "version": "1",
     "name": "Gaza Aid Platform",
-    "homeUrl": "http://localhost:3000",
-    "iconUrl": "http://localhost:3000/giraffe.png",
-    "splashImageUrl": "http://localhost:3000/giraffe.png",
-    "splashBackgroundColor": "#f3f4f6",
+    "homeUrl": "https://farcaster-donate-to-gaza.vercel.app",
+    "iconUrl": "https://farcaster-donate-to-gaza.vercel.app/giraffe.png",
     "subtitle": "Direct Crypto Donations",
     "description": "Support Ibrahim's family in Gaza with direct cryptocurrency donations for food, rent, and medicine. 100% of your donation directly reaches them.",
-    "primaryCategory": "finance",
-    "tags": ["donation", "gaza", "aid", "crypto", "humanitarian"],
-    "heroImageUrl": "http://localhost:3000/api/images/start",
-    "tagline": "Direct Aid, Zero Admin Fees",
-    "ogTitle": "Support Ibrahim's Family in Gaza",
-    "ogDescription": "Direct cryptocurrency donations for immediate humanitarian aid",
-    "ogImageUrl": "http://localhost:3000/api/images/start",
-    "noindex": false,
-    "requiredChains": [
-      "eip155:8453"
-    ],
-    "requiredCapabilities": [
-      "wallet.sendTransaction"
-    ]
+    "splashBackgroundColor": "#f3f4f6",
+    "primaryCategory": "finance"
   }
 }

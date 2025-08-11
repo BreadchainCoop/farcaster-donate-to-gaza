@@ -1,4 +1,9 @@
 {
+  "accountAssociation": {
+    "header": "eyJmaWQiOjY5NjAxMiwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDZFMjczN2Q3QjcyNDdBMzVFZDY4NTFhNjg1YTE1NEZCQTE5RTQxRGEifQ",
+    "payload": "eyJkb21haW4iOiJmYXJjYXN0ZXItZG9uYXRlLXRvLWdhemEudmVyY2VsLmFwcCJ9",
+    "signature": "V+Wwbz4H2bUC42U9qEmXi74PY3rNvZJFxbSeqKErhcN0wShOWdWWH4eE4G1vu5qIPTgAbr9vOTJbj6BpOF0e9xw="
+  },
   "miniapp": {
     "name": "Gaza Donations - Ibrahim Friends",
     "homeUrl": "https://farcaster-donate-to-gaza.vercel.app",

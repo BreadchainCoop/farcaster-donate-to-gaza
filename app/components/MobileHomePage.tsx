@@ -17,33 +17,6 @@ export default function MobileHomePage() {
 
       {/* Main Content */}
       <div className="px-4 py-6 space-y-6">
-        {/* Quick Stats - Mobile Optimized */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="bg-white rounded-xl shadow-sm p-4 text-center">
-            <div className="text-2xl font-bold text-purple-600">{campaignInfo.quickFacts.familySize}</div>
-            <div className="text-xs text-gray-600 mt-1">People Supported</div>
-          </div>
-          <div className="bg-white rounded-xl shadow-sm p-4 text-center">
-            <div className="text-2xl font-bold text-purple-600">{campaignInfo.quickFacts.dailyFoodCost}</div>
-            <div className="text-xs text-gray-600 mt-1">Daily Food Cost</div>
-          </div>
-          <div className="bg-white rounded-xl shadow-sm p-4 text-center">
-            <div className="text-2xl font-bold text-purple-600">{campaignInfo.quickFacts.monthlyGoal}</div>
-            <div className="text-xs text-gray-600 mt-1">Monthly Goal</div>
-          </div>
-          <div className="bg-white rounded-xl shadow-sm p-4 text-center">
-            <div className="text-2xl font-bold text-red-600">{campaignInfo.quickFacts.commissionRate}</div>
-            <div className="text-xs text-gray-600 mt-1">Exchange Fee</div>
-          </div>
-        </div>
-
-        {/* Urgent Notice - Mobile */}
-        <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-          <h3 className="font-semibold text-red-900 text-sm">⚠️ Urgent Need</h3>
-          <p className="text-xs text-red-800 mt-1">
-            Food prices in Gaza: Flour ${campaignInfo.quickFacts.flourCost}, Chicken ${campaignInfo.quickFacts.chickenCost}
-          </p>
-        </div>
 
         {/* Donation Widget */}
         <MobileDonationWidget />

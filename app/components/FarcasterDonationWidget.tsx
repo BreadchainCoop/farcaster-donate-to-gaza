@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { DONATION_ADDRESS, SUPPORTED_TOKENS } from '../config';
 import { QRCodeSVG as QRCode } from 'qrcode.react';
 import sdk from '@farcaster/frame-sdk';
+import ShareDonationFrame from './ShareDonationFrame';
 
 export default function FarcasterDonationWidget() {
   const [selectedToken, setSelectedToken] = useState('ETH');
@@ -17,6 +18,12 @@ export default function FarcasterDonationWidget() {
   const [isConnecting, setIsConnecting] = useState(false);
   const [frameContext, setFrameContext] = useState<any>(null);
   const [isInFarcasterContext, setIsInFarcasterContext] = useState(false);
+  const [showShareFrame, setShowShareFrame] = useState(false);
+  const [lastDonation, setLastDonation] = useState<{
+    amount: string;
+    asset: string;
+    txHash: string;
+  } | null>(null);
 
   const networks = {
     base: { name: 'Base', chainId: 8453, explorer: 'https://basescan.org', rpcUrl: 'https://mainnet.base.org' },
@@ -237,7 +244,13 @@ export default function FarcasterDonationWidget() {
               }],
             });
 
-            alert(`Transaction sent! Hash: ${txHash}\n\nThank you for your donation of ${amount} ${selectedToken} (≈$${usdEquivalent})!`);
+            // Store donation details and show share frame
+            setLastDonation({
+              amount: amount,
+              asset: selectedToken,
+              txHash: txHash as string
+            });
+            setShowShareFrame(true);
             setAmount('');
             fetchBalance(); // Update balance after transaction
             return;
@@ -273,7 +286,13 @@ export default function FarcasterDonationWidget() {
             }],
           });
 
-          alert(`Transaction sent! Hash: ${txHash}\n\nThank you for your donation of ${amount} ${selectedToken} (≈$${usdEquivalent})!`);
+          // Store donation details and show share frame
+          setLastDonation({
+            amount: amount,
+            asset: selectedToken,
+            txHash: txHash as string
+          });
+          setShowShareFrame(true);
           setAmount('');
           fetchBalance();
         } else {
@@ -297,7 +316,19 @@ export default function FarcasterDonationWidget() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8">
+    <>
+      {/* Share Frame Popup */}
+      {showShareFrame && lastDonation && walletAddress && (
+        <ShareDonationFrame
+          amount={lastDonation.amount}
+          asset={lastDonation.asset}
+          userAddress={walletAddress}
+          txHash={lastDonation.txHash}
+          onClose={() => setShowShareFrame(false)}
+        />
+      )}
+
+      <div className="bg-white rounded-lg shadow-lg p-8">
       <h2 className="text-2xl font-bold mb-6">Make a Donation</h2>
 
       {/* Wallet Connection Status */}
@@ -498,6 +529,7 @@ export default function FarcasterDonationWidget() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

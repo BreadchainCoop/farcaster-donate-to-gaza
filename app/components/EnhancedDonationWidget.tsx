@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { DONATION_ADDRESS, SUPPORTED_TOKENS } from '../config';
 import sdk from '@farcaster/frame-sdk';
+import ShareDonationFrame from './ShareDonationFrame';
 
 type TransactionState = 'idle' | 'connecting' | 'switching' | 'signing' | 'pending' | 'confirmed' | 'failed';
 
@@ -16,6 +17,8 @@ export default function EnhancedDonationWidget() {
   const [copiedAddress, setCopiedAddress] = useState(false);
   const [isInFarcasterContext, setIsInFarcasterContext] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
+  const [showShareFrame, setShowShareFrame] = useState(false);
+  const [lastDonationAmount, setLastDonationAmount] = useState('');
 
   const networks = {
     base: { 
@@ -70,6 +73,7 @@ export default function EnhancedDonationWidget() {
           if (data.result) {
             if (data.result.status === '0x1') {
               setTxState('confirmed');
+              setShowShareFrame(true);
             } else {
               setTxState('failed');
               setTxError('Transaction failed on chain');
@@ -230,6 +234,7 @@ export default function EnhancedDonationWidget() {
 
       setTxHash(hash);
       setTxState('pending');
+      setLastDonationAmount(amount);
       setAmount('');
 
     } catch (error: any) {
@@ -262,7 +267,19 @@ export default function EnhancedDonationWidget() {
     : ['100', '250', '500', '1000', '2500', '5000'];
 
   return (
-    <div className="w-full max-w-lg mx-auto">
+    <>
+      {/* Share Frame Popup */}
+      {showShareFrame && walletAddress && txHash && (
+        <ShareDonationFrame
+          amount={lastDonationAmount}
+          asset={selectedToken}
+          userAddress={walletAddress}
+          txHash={txHash}
+          onClose={() => setShowShareFrame(false)}
+        />
+      )}
+
+      <div className="w-full max-w-lg mx-auto">
       {/* Context Card */}
       <div className="bg-white rounded-2xl shadow-lg p-6 mb-4 border-l-4 border-purple-500">
         <h3 className="font-bold text-gray-900 mb-2">Support Ibrahim's Family in Gaza</h3>
@@ -527,6 +544,7 @@ export default function EnhancedDonationWidget() {
         }
       `}</style>
     </div>
+    </>
   );
 }
 

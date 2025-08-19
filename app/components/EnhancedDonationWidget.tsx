@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { DONATION_ADDRESS, SUPPORTED_TOKENS } from '../config';
 import sdk from '@farcaster/frame-sdk';
+import ShareDonationFrame from './ShareDonationFrame';
 
 type TransactionState = 'idle' | 'connecting' | 'switching' | 'signing' | 'pending' | 'confirmed' | 'failed';
 
@@ -16,6 +17,7 @@ export default function EnhancedDonationWidget() {
   const [copiedAddress, setCopiedAddress] = useState(false);
   const [isInFarcasterContext, setIsInFarcasterContext] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
+  const [showShareFrame, setShowShareFrame] = useState(false);
 
   const networks = {
     base: { 
@@ -70,6 +72,8 @@ export default function EnhancedDonationWidget() {
           if (data.result) {
             if (data.result.status === '0x1') {
               setTxState('confirmed');
+              // Show share frame after a brief delay to let the success animation show
+              setTimeout(() => setShowShareFrame(true), 1500);
             } else {
               setTxState('failed');
               setTxError('Transaction failed on chain');
@@ -441,6 +445,20 @@ export default function EnhancedDonationWidget() {
             )}
           </button>
 
+          {/* Test Button for Demo - Remove in production */}
+          <button
+            onClick={() => {
+              setAmount('10');
+              setWalletAddress('0x1234567890123456789012345678901234567890');
+              setTxHash('0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890');
+              setTxState('confirmed');
+              setTimeout(() => setShowShareFrame(true), 500);
+            }}
+            className="w-full py-2 px-4 bg-purple-600 text-white rounded-xl font-medium hover:bg-purple-700 transition-all duration-200 text-sm"
+          >
+            🧪 Test Share Popup (Demo)
+          </button>
+
           {/* Transaction Status */}
           {txHash && (
             <div className={`p-4 rounded-xl transition-all duration-500 ${
@@ -518,6 +536,16 @@ export default function EnhancedDonationWidget() {
           </div>
         </div>
       </div>
+
+      {/* Share Donation Frame Popup */}
+      <ShareDonationFrame
+        show={showShareFrame}
+        onClose={() => setShowShareFrame(false)}
+        amount={amount}
+        token={selectedToken}
+        userAddress={walletAddress || ''}
+        txHash={txHash}
+      />
 
       <style jsx>{`
         @keyframes loading {

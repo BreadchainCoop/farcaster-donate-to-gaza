@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { ImageResponse } from 'next/og';
+import { CARD_DIMENSIONS } from '../../../config';
 
 export const runtime = 'edge';
 
@@ -19,36 +20,40 @@ export async function GET(req: NextRequest) {
     (
       <div
         style={{
+          position: 'relative',
           display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#f3f4f6',
-          padding: '40px',
+          flexDirection: 'column',
+          textAlign: 'center',
+          width: 800,
+          height: 800,
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         }}
       >
         <div
           style={{
             display: 'flex',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'white',
+            background: 'white',
             borderRadius: '20px',
             padding: '60px',
-            boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-            maxWidth: '700px',
+            width: '700px',
+            height: '600px',
           }}
         >
           <h1
             style={{
               fontSize: '48px',
               fontWeight: 'bold',
-              textAlign: 'center',
-              marginBottom: '20px',
               color: '#111827',
+              margin: '0 0 20px 0',
             }}
           >
             Thank You!
@@ -56,72 +61,53 @@ export async function GET(req: NextRequest) {
           <p
             style={{
               fontSize: '24px',
-              textAlign: 'center',
               color: '#6b7280',
-              marginBottom: '30px',
+              margin: '0 0 30px 0',
             }}
           >
             Your donation makes a real difference
           </p>
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '20px',
+              fontSize: '36px',
+              fontWeight: 'bold',
+              color: '#2563eb',
+              margin: '0 0 20px 0',
             }}
           >
-            <div
-              style={{
-                fontSize: '36px',
-                fontWeight: 'bold',
-                color: '#2563eb',
-              }}
-            >
-              {amount} {token} donated
-            </div>
-            <div
-              style={{
-                fontSize: '20px',
-                color: '#6b7280',
-              }}
-            >
-              From: {formatAddress(address)}
-            </div>
-            <div
-              style={{
-                fontSize: '20px',
-                color: '#374151',
-              }}
-            >
-              Supporting Ibrahim's family in Gaza
-            </div>
-            <div
-              style={{
-                fontSize: '20px',
-                color: '#374151',
-              }}
-            >
-              27 people supported daily
-            </div>
-            <div
-              style={{
-                fontSize: '20px',
-                color: '#374151',
-              }}
-            >
-              100% goes to the family
-            </div>
+            {amount} {token} donated
           </div>
           <div
             style={{
-              marginTop: '40px',
-              padding: '15px 30px',
-              backgroundColor: '#10b981',
-              color: 'white',
-              borderRadius: '10px',
-              fontSize: '24px',
-              fontWeight: 'bold',
+              fontSize: '20px',
+              color: '#6b7280',
+              margin: '0 0 30px 0',
+            }}
+          >
+            From: {formatAddress(address)}
+          </div>
+          <div
+            style={{
+              fontSize: '18px',
+              color: '#374151',
+              margin: '0 0 10px 0',
+            }}
+          >
+            Supporting Ibrahim's family in Gaza
+          </div>
+          <div
+            style={{
+              fontSize: '16px',
+              color: '#6b7280',
+              margin: '0 0 30px 0',
+            }}
+          >
+            27 people • 100% direct support
+          </div>
+          <div
+            style={{
+              fontSize: '16px',
+              color: '#9ca3af',
             }}
           >
             Powered by Breadfunds
@@ -129,9 +115,6 @@ export async function GET(req: NextRequest) {
         </div>
       </div>
     ),
-    {
-      width: 800,
-      height: 800,
-    }
+    CARD_DIMENSIONS
   );
 }

@@ -445,20 +445,6 @@ export default function EnhancedDonationWidget() {
             )}
           </button>
 
-          {/* Test Button for Demo - Remove in production */}
-          <button
-            onClick={() => {
-              setAmount('10');
-              setWalletAddress('0x1234567890123456789012345678901234567890');
-              setTxHash('0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890');
-              setTxState('confirmed');
-              setTimeout(() => setShowShareFrame(true), 500);
-            }}
-            className="w-full py-2 px-4 bg-purple-600 text-white rounded-xl font-medium hover:bg-purple-700 transition-all duration-200 text-sm"
-          >
-            🧪 Test Share Popup (Demo)
-          </button>
-
           {/* Transaction Status */}
           {txHash && (
             <div className={`p-4 rounded-xl transition-all duration-500 ${
